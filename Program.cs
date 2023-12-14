@@ -21,4 +21,4 @@ var result = service?.Query(queryInput);
 
 
 Console.WriteLine("done: " + result);
-Console.ReadLine();
+Console.ReadKey();
