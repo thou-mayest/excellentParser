@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using excellent_parser;
+using Newtonsoft.Json;
 
 Console.WriteLine("Hello, World!");
 
@@ -15,4 +16,9 @@ Console.WriteLine("Input query: ");
 var queryInput = Console.ReadLine();
 var service = serviceProvider.GetService<ICSVService>();
 var result = service?.Query(queryInput);
+
+
+
+
 Console.WriteLine("done: " + result);
+Console.ReadLine();

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace excellent_parser
 {
@@ -20,12 +23,12 @@ namespace excellent_parser
         {
             string[] args = query.Split(' ');
             
-            if (GetColumns(args).Count() == 1 && GetColumns(args)[0] == "*")
+            if (GetColumns(args).Count() == 1 && GetColumns(args)[0] == "*" && query.IndexOf("WHERE") == -1)
                 return _fileservice.ReadFile(GetPath(args));
 
             string[] FileColumnNames = _fileservice.ReadFileLines(GetPath(args)).First().Split(',');
-            var reqColumns = GetColumns(args);
-
+            
+            string[] reqColumns = GetColumns(args);
             List<int> indexes = new ();
 
 
@@ -39,26 +42,60 @@ namespace excellent_parser
 
 
             List<string> lines = _fileservice.ReadFileLines(GetPath(args)).ToList();
-            List<string> result = new();
-
-            foreach (string line in lines)
+            lines.RemoveAt(0);
+            
+            foreach(string l in lines)
             {
-                string temp = "";
-                foreach(int i in indexes)
-                {
-                    temp+=',';
-                    temp+=line.Split(',')[i];
-                }
+                l.Replace("\"",string.Empty);
+            }
+           
+            //filter
+            lines = Filter(args,lines,FileColumnNames);
+            
 
-                result.Add(temp);
+            // foreach (string line in lines)
+            // {
+            //     string row = "";
+            //     foreach(int i in indexes)
+            //     {
+                    
+            //         row+=line.Split(',')[i];
+            //         row+=',';
+            //     }
+
+            //     result.Add(row);
+            // }
+
+
+
+            // foreach (int i in indexes)
+            // {
+            //     string column = "";
+            //     foreach(string l in lines)
+            //     {
+            //         column += l.Split(',')[i]+',';
+            //     }
+            //     result.Add(column);
+            // }
+
+            JObject jsonObject = new JObject();
+
+             foreach (int i in indexes)
+            {
+                JArray values = new();
+                foreach(string l in lines)
+                {
+                    values.Add(l.Split(',')[i]);
+                }
+                jsonObject.Add(FileColumnNames[i],values);
+                
             }
 
-            return String.Join(",", result);
+            return jsonObject.ToString();
         }
 
         string GetPath (string[] args)
         {
-            
             var indexOfPath = Array.IndexOf(args,"FROM");
             indexOfPath = indexOfPath == -1 ? Array.IndexOf(args,"from") : indexOfPath;
 
@@ -74,9 +111,51 @@ namespace excellent_parser
             return columns;
         }
 
-        string GetCondition(string[] args)
+
+        List<string> Filter(string[] args,List<string> lines,string[] FileColumns)
         {
-            return "";
+            var indexOfCond = Array.IndexOf(args,"WHERE");
+            indexOfCond = indexOfCond == -1 ? Array.IndexOf(args,"where") : indexOfCond;
+            
+            var result = new List<string>();
+
+            if (indexOfCond == -1 )
+                return lines;
+
+            //string condition = args[indexOfCond+1]+args[indexOfCond+2]+args[indexOfCond+3];
+
+            var ColumnIndex = Array.IndexOf(FileColumns,args[indexOfCond+1]);
+            var columnValue = args[indexOfCond+3];
+
+            //condition = if line(columnKey) == conditionVal 
+
+            //loop remove if condition
+            var count = lines.Count;
+
+            if(args[indexOfCond+2].Contains("=="))
+            {
+                for(int i=0;i<count;i++)
+                {
+                    if (lines[i].Split(',')[ColumnIndex] == columnValue)
+                    {
+                        result.Add(lines[i]);
+                    }
+                }
+            }
+
+            if(args[indexOfCond+2].Contains("!="))
+            {
+                for(int i=0;i<count;i++)
+                {
+                    if (lines[i].Split(',')[ColumnIndex] != columnValue)
+                    {
+                        result.Add(lines[i]);
+                    }
+                }
+            }
+            
+
+            return result;
         }
     }
 }

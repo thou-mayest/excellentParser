@@ -44,3 +44,4 @@ C:\Users\brahm\Desktop\excellent_parser\excellent_parser\obj\Debug\net8.0\refint
 C:\Users\brahm\Desktop\excellent_parser\excellent_parser\obj\Debug\net8.0\excellent_parser.pdb
 C:\Users\brahm\Desktop\excellent_parser\excellent_parser\obj\Debug\net8.0\excellent_parser.genruntimeconfig.cache
 C:\Users\brahm\Desktop\excellent_parser\excellent_parser\obj\Debug\net8.0\ref\excellent_parser.dll
+C:\Users\brahm\Desktop\excellent_parser\excellent_parser\bin\Debug\net8.0\Newtonsoft.Json.dll
