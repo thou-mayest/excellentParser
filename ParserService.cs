@@ -51,32 +51,6 @@ namespace excellent_parser
            
             //filter
             lines = Filter(args,lines,FileColumnNames);
-            
-
-            // foreach (string line in lines)
-            // {
-            //     string row = "";
-            //     foreach(int i in indexes)
-            //     {
-                    
-            //         row+=line.Split(',')[i];
-            //         row+=',';
-            //     }
-
-            //     result.Add(row);
-            // }
-
-
-
-            // foreach (int i in indexes)
-            // {
-            //     string column = "";
-            //     foreach(string l in lines)
-            //     {
-            //         column += l.Split(',')[i]+',';
-            //     }
-            //     result.Add(column);
-            // }
 
             JObject jsonObject = new JObject();
 
@@ -121,8 +95,6 @@ namespace excellent_parser
 
             if (indexOfCond == -1 )
                 return lines;
-
-            //string condition = args[indexOfCond+1]+args[indexOfCond+2]+args[indexOfCond+3];
 
             var ColumnIndex = Array.IndexOf(FileColumns,args[indexOfCond+1]);
             var columnValue = args[indexOfCond+3];

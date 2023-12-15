@@ -1,10 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using excellent_parser;
-using Newtonsoft.Json;
-
-Console.WriteLine("Hello, World!");
 
 var serviceProvider = new ServiceCollection()
             .AddLogging()
@@ -12,13 +8,12 @@ var serviceProvider = new ServiceCollection()
             .AddSingleton<ICSVService, ParserService>()
             .BuildServiceProvider();
 
+Console.WriteLine("example query (spaces are important in where clause): ");
+Console.WriteLine("select deviceVendor,deviceProduct from test.csv WHERE deviceVendor != Microsoft");
 Console.WriteLine("Input query: ");
 var queryInput = Console.ReadLine();
 var service = serviceProvider.GetService<ICSVService>();
 var result = service?.Query(queryInput);
-
-
-
 
 Console.WriteLine("done: " + result);
 Console.ReadKey();
