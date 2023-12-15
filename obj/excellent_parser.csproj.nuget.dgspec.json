@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\excellent_parser.csproj": {}
+    "D:\\Projects\\dev\\excellent_parser\\excellent_parser.csproj": {}
   },
   "projects": {
-    "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\excellent_parser.csproj": {
+    "D:\\Projects\\dev\\excellent_parser\\excellent_parser.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\excellent_parser.csproj",
+        "projectUniqueName": "D:\\Projects\\dev\\excellent_parser\\excellent_parser.csproj",
         "projectName": "excellent_parser",
-        "projectPath": "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\excellent_parser.csproj",
+        "projectPath": "D:\\Projects\\dev\\excellent_parser\\excellent_parser.csproj",
         "packagesPath": "C:\\Users\\brahm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\obj\\",
+        "outputPath": "D:\\Projects\\dev\\excellent_parser\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\brahm\\AppData\\Roaming\\NuGet\\NuGet.Config",

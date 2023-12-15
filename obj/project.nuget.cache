@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UUYFbJnnVFrsY2zjSuw2v+zP//krHBCYCd/OlO48QsrHahb12jeL+Kv1YKvQ9Hc1TvJYvCkb3x5x1xlKcsV7dQ==",
+  "dgSpecHash": "tZ/6lzcW/mbc7zD1lf9nSW+ohiO8HMkTey9c12HwngZDUXITPcwC8xdMOssKdBlUR+PkCjN5T+Kstu5lSibnYQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\brahm\\Desktop\\excellent_parser\\excellent_parser\\excellent_parser.csproj",
+  "projectFilePath": "D:\\Projects\\dev\\excellent_parser\\excellent_parser.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\brahm\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\brahm\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",

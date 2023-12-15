@@ -53,16 +53,33 @@ namespace excellent_parser
             lines = Filter(args,lines,FileColumnNames);
 
             JObject jsonObject = new JObject();
+            JObject row = new JObject();
 
-             foreach (int i in indexes)
-            {
-                JArray values = new();
-                foreach(string l in lines)
-                {
-                    values.Add(l.Split(',')[i]);
-                }
-                jsonObject.Add(FileColumnNames[i],values);
+            //  foreach (int i in indexes)
+            // {
+            //     JArray values = new();
+            //     foreach(string l in lines)
+            //     {
+            //         //values.Add(l.Split(',')[i]);
+            //         jsonObject.Add(FileColumnNames[i],l.Split(',')[i]);
+            //     }
+            //     //jsonObject.Add(FileColumnNames[i],values);
                 
+            // }
+
+
+            int rowId=0;
+            foreach(string line in lines)
+            {
+                
+                JArray values = new ();
+                row = new JObject();
+                foreach(int i in indexes)
+                {
+                    row.Add(FileColumnNames[i],line.Split(',')[i]);
+                }
+                jsonObject.Add(rowId.ToString(),row);
+                rowId++;
             }
 
             return jsonObject.ToString();
