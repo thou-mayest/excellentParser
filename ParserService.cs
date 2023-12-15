@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,9 +27,17 @@ namespace excellent_parser
             if (GetColumns(args).Count() == 1 && GetColumns(args)[0] == "*" && query.IndexOf("WHERE") == -1)
                 return _fileservice.ReadFile(GetPath(args));
 
-            string[] FileColumnNames = _fileservice.ReadFileLines(GetPath(args)).First().Split(',');
-            
+            string[] FileColumnNames = _fileservice.ReadFileLines(GetPath(args)).Where(x => x.Contains(',')).First().Split(',');
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("columns:" + string.Join(" , ",FileColumnNames));
+            Console.ForegroundColor = ConsoleColor.White;
+
             string[] reqColumns = GetColumns(args);
+
+            if (GetColumns(args).Count() == 1 && GetColumns(args)[0] == "*")
+                reqColumns =  _fileservice.ReadFileLines(GetPath(args)).First().Split(',');
+
             List<int> indexes = new ();
 
 
@@ -41,7 +50,7 @@ namespace excellent_parser
             }
 
 
-            List<string> lines = _fileservice.ReadFileLines(GetPath(args)).ToList();
+            List<string> lines = _fileservice.ReadFileLines(GetPath(args)).Where(x => x.Contains(',')).ToList();
             lines.RemoveAt(0);
             
             foreach(string l in lines)
@@ -71,8 +80,6 @@ namespace excellent_parser
             int rowId=0;
             foreach(string line in lines)
             {
-                
-                JArray values = new ();
                 row = new JObject();
                 foreach(int i in indexes)
                 {
@@ -95,11 +102,12 @@ namespace excellent_parser
 
         string[] GetColumns(string[] args)
         {
-            var indexOfColumn = Array.IndexOf(args,"SELECT");
-            indexOfColumn = indexOfColumn == -1 ? Array.IndexOf(args,"select") : indexOfColumn;
-            var columns =  args[indexOfColumn+1].Split(',');
-            
-            return columns;
+            var indexOfColumn = Array.IndexOf(args, "SELECT") != -1 ? Array.IndexOf(args, "SELECT")  : Array.IndexOf(args, "select");
+            var indexOfFrom = Array.IndexOf(args, "FROM") != -1 ? Array.IndexOf(args, "FROM") : Array.IndexOf(args, "from");
+            indexOfColumn = indexOfColumn == -1 ? Array.IndexOf(args, "select") : indexOfColumn;
+            var columns = args.Skip(indexOfColumn+1).Take(indexOfFrom - indexOfColumn -1).ToArray();
+            string result = string.Join(" ", columns);
+            return result.Split(',') ;
         }
 
 
@@ -112,31 +120,49 @@ namespace excellent_parser
 
             if (indexOfCond == -1 )
                 return lines;
+                
+            string[] fullClauseArray = args.Skip(indexOfCond+1).Take(args.Length - indexOfCond - 1).ToArray();
 
-            var ColumnIndex = Array.IndexOf(FileColumns,args[indexOfCond+1]);
-            var columnValue = args[indexOfCond+3];
+            string fullClauseString = string.Join(" ",fullClauseArray);
+                    
+            //var ColumnIndex = Array.IndexOf(FileColumns,args[indexOfCond+1]);
 
+            //var columnValue = args[indexOfCond+3];
+            
             //condition = if line(columnKey) == conditionVal 
 
             //loop remove if condition
             var count = lines.Count;
 
-            if(args[indexOfCond+2].Contains("=="))
+            if(fullClauseString.Contains("=="))
             {
+                string[] Clause = fullClauseString.Split("==");
+
+                var ColumnIndex = Array.IndexOf(FileColumns,Clause[0].Trim(' '));
+                var columnValue = Clause[1].Trim(' ');
+
                 for(int i=0;i<count;i++)
                 {
-                    if (lines[i].Split(',')[ColumnIndex] == columnValue)
+                    if (lines[i].Split(',')[ColumnIndex].Trim(' ').Contains(columnValue))
                     {
                         result.Add(lines[i]);
                     }
                 }
             }
 
-            if(args[indexOfCond+2].Contains("!="))
+            if(fullClauseString.Contains("!="))
             {
+                string[] Clause = fullClauseString.Split("!=");
+
+                var ColumnIndex = Array.IndexOf(FileColumns,Clause[0].Trim(' '));
+                var columnValue = Clause[1].Trim(' ');
+
+                
+
                 for(int i=0;i<count;i++)
                 {
-                    if (lines[i].Split(',')[ColumnIndex] != columnValue)
+
+                    if (lines[i].Split(',')[ColumnIndex].Trim(' ') != columnValue)
                     {
                         result.Add(lines[i]);
                     }

@@ -10,10 +10,17 @@ var serviceProvider = new ServiceCollection()
 
 Console.WriteLine("example query (spaces are important in where clause): ");
 Console.WriteLine("select deviceVendor,deviceProduct from test.csv WHERE deviceVendor != Microsoft");
-Console.WriteLine("Input query: ");
-var queryInput = Console.ReadLine();
-var service = serviceProvider.GetService<ICSVService>();
-var result = service?.Query(queryInput);
 
-Console.WriteLine("done: " + result);
-Console.ReadKey();
+ConsoleKey key = ConsoleKey.N;
+while(key !=ConsoleKey.E)
+{
+
+    Console.WriteLine("Input query: ");
+    var queryInput = Console.ReadLine();
+    var service = serviceProvider.GetService<ICSVService>();
+    var result = service?.Query(queryInput);
+    
+    Console.WriteLine("json result: " + result);
+    Console.WriteLine("press E to exist,any key continue ...");
+    key = Console.ReadKey().Key;
+}
